@@ -75,6 +75,8 @@ public class EventLogs implements Listener {
 		if (player.hasPermission("inventoryrollbackplus.adminalerts")) {
 			// can send info to admins here
 		}
+		main.getServer().getScheduler().runTaskLater(main,
+				() -> main.getPlayerRestoreService().processQueuedRestores(player), 1L);
 	}
 
 	@EventHandler

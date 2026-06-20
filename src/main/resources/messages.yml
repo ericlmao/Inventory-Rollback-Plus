@@ -45,6 +45,7 @@ attribute-restore:
     not-online: 'You can''t restore %NAME%''s experience while they are offline.'
     button-name: '&2Restore Player XP'
     button-lore: '&rLevel %XP%'
+  queued: '%NAME% is offline. The %ACTION% restore has been queued and will run when they next join.'
 
 shulkerbox:
   exported: "Exported inventory to shulker boxes. Check your inventory!"

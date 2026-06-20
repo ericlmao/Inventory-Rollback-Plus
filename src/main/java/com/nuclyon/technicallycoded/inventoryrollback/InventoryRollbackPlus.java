@@ -11,6 +11,8 @@ import me.danjono.inventoryrollback.InventoryRollback;
 import me.danjono.inventoryrollback.config.ConfigData;
 import me.danjono.inventoryrollback.config.MessageData;
 import me.danjono.inventoryrollback.data.LogType;
+import me.danjono.inventoryrollback.inventory.PendingRestoreQueue;
+import me.danjono.inventoryrollback.inventory.PlayerRestoreService;
 import me.danjono.inventoryrollback.inventory.SaveInventory;
 import me.danjono.inventoryrollback.listeners.ClickGUI;
 import me.danjono.inventoryrollback.listeners.EventLogs;
@@ -32,6 +34,8 @@ public class InventoryRollbackPlus extends InventoryRollback {
     private static InventoryRollbackPlus instancePlus;
 
     private TimeZoneUtil timeZoneUtil = null;
+    private PendingRestoreQueue pendingRestoreQueue;
+    private PlayerRestoreService playerRestoreService;
 
     private ConfigData configData;
     private BukkitVersion version = BukkitVersion.v1_13_R1;
@@ -74,6 +78,8 @@ public class InventoryRollbackPlus extends InventoryRollback {
 
         // Storage Init & Update checker
         super.startupTasks();
+        pendingRestoreQueue = new PendingRestoreQueue(this);
+        playerRestoreService = new PlayerRestoreService(this, pendingRestoreQueue);
 
         // bStats
         if (ConfigData.isbStatsEnabled()) initBStats();
@@ -135,6 +141,10 @@ public class InventoryRollbackPlus extends InventoryRollback {
 
     public void setVersion(BukkitVersion versionName) {
         version = versionName;
+    }
+
+    public PlayerRestoreService getPlayerRestoreService() {
+        return playerRestoreService;
     }
 
     public boolean isCompatibleCb(String cbVersion) {

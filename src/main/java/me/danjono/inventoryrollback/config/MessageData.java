@@ -108,6 +108,7 @@ public class MessageData {
     private static String experienceNotOnline;
     private static String experienceButton;
     private static String experienceButtonLore;
+    private static String restoreQueued;
 
     // Shulkerbox GUI messages
     private static String shulkerBoxExported;
@@ -189,6 +190,7 @@ public class MessageData {
         setExperienceNotOnlinePlayer(convertColorCodes((String) getDefaultValue("attribute-restore.experience.not-online", "You can't restore %NAME%'s experience while they are offline.")));
         setExperienceButton(convertColorCodes((String) getDefaultValue("attribute-restore.experience.button-name", "&2Restore Player XP")));
         setExperienceButtonLore(convertColorCodes((String) getDefaultValue("attribute-restore.experience.button-lore", "&rLevel %XP%")));
+        setRestoreQueued(convertColorCodes((String) getDefaultValue("attribute-restore.queued", "%NAME% is offline. The %ACTION% restore has been queued and will run when they next join.")));
 
         // Death only gui
         setDeathLocationWorld(convertColorCodes((String) getDefaultValue("death-location.world", "&6World: &f%WORLD%")));
@@ -224,6 +226,7 @@ public class MessageData {
 
     private static String nameVariable = "%NAME%";
     private static String xpVariable = "%XP%";
+    private static String actionVariable = "%ACTION%";
 
     public static void setPluginPrefix(String message) {
         pluginPrefix = message;
@@ -367,6 +370,10 @@ public class MessageData {
 
     public static void setExperienceButtonLore(String message) {
         experienceButtonLore = message;
+    }
+
+    public static void setRestoreQueued(String message) {
+        restoreQueued = message;
     }
 
     public static void setShulkerBoxExported(String message) {
@@ -619,6 +626,10 @@ public class MessageData {
 
     public static String getExperienceRestoreLevel(int xp) {
         return experienceButtonLore.replaceAll(xpVariable, xp + "");
+    }
+
+    public static String getRestoreQueued(String name, String action) {
+        return restoreQueued.replaceAll(nameVariable, name).replaceAll(actionVariable, action);
     }
 
     public static String getShulkerBoxExported() {

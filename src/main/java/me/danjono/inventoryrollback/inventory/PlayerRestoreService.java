@@ -11,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -153,8 +154,8 @@ public class PlayerRestoreService {
     }
 
     private void restoreMainInventory(Player player, PlayerData data) {
-        ItemStack[] inventory = data.getMainInventory();
-        ItemStack[] armour = data.getArmour();
+        ItemStack[] inventory = normalizeContents(data.getMainInventory(), player.getInventory().getSize());
+        ItemStack[] armour = normalizeContents(data.getArmour(), player.getInventory().getArmorContents().length);
 
         player.getInventory().setContents(inventory);
         if (main.getVersion().lessOrEqThan(BukkitVersion.v1_8_R3)) {
@@ -167,14 +168,19 @@ public class PlayerRestoreService {
     }
 
     private void restoreEnderChest(Player player, PlayerData data) {
-        ItemStack[] enderChest = data.getEnderChest();
-        if (enderChest == null) {
-            enderChest = new ItemStack[0];
-        }
+        ItemStack[] enderChest = normalizeContents(data.getEnderChest(), player.getEnderChest().getSize());
         player.getEnderChest().setContents(enderChest);
 
         if (SoundData.isInventoryRestoreEnabled()) {
             player.playSound(player.getLocation(), SoundData.getInventoryRestored(), 1, 1);
         }
+    }
+
+    static ItemStack[] normalizeContents(ItemStack[] items, int destinationSize) {
+        if (items == null) {
+            return new ItemStack[destinationSize];
+        }
+
+        return Arrays.copyOf(items, destinationSize);
     }
 }
